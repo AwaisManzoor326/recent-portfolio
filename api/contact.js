@@ -1,10 +1,39 @@
-export default async function handler(req, res) {
+function parseJsonBody(req) {
+  return new Promise((resolve, reject) => {
+    let body = '';
+    req.on('data', (chunk) => {
+      body += chunk;
+    });
+    req.on('end', () => {
+      if (!body) {
+        resolve({});
+        return;
+      }
+      try {
+        resolve(JSON.parse(body));
+      } catch (err) {
+        reject(err);
+      }
+    });
+    req.on('error', reject);
+  });
+}
+
+module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
     res.status(405).json({ success: false, error: 'Method not allowed' });
     return;
   }
 
-  const { name, email, subject, message } = req.body || {};
+  let body;
+  try {
+    body = req.body || (await parseJsonBody(req));
+  } catch (err) {
+    res.status(400).json({ success: false, error: 'Invalid JSON body.' });
+    return;
+  }
+
+  const { name, email, subject, message } = body || {};
 
   if (!name || !email || !subject || !message) {
     res.status(400).json({ success: false, error: 'All fields are required.' });
@@ -59,4 +88,4 @@ export default async function handler(req, res) {
     console.error('Contact handler failed:', error);
     res.status(502).json({ success: false, error: 'Email delivery failed.' });
   }
-}
+};
