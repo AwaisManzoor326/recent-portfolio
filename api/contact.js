@@ -19,9 +19,18 @@ function parseJsonBody(req) {
   });
 }
 
+function sendJson(res, statusCode, payload) {
+  const body = JSON.stringify(payload);
+  res.writeHead(statusCode, {
+    'Content-Type': 'application/json; charset=utf-8',
+    'Content-Length': Buffer.byteLength(body),
+  });
+  res.end(body);
+}
+
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
-    res.status(405).json({ success: false, error: 'Method not allowed' });
+    sendJson(res, 405, { success: false, error: 'Method not allowed' });
     return;
   }
 
@@ -29,14 +38,14 @@ module.exports = async function handler(req, res) {
   try {
     body = req.body || (await parseJsonBody(req));
   } catch (err) {
-    res.status(400).json({ success: false, error: 'Invalid JSON body.' });
+    sendJson(res, 400, { success: false, error: 'Invalid JSON body.' });
     return;
   }
 
   const { name, email, subject, message } = body || {};
 
   if (!name || !email || !subject || !message) {
-    res.status(400).json({ success: false, error: 'All fields are required.' });
+    sendJson(res, 400, { success: false, error: 'All fields are required.' });
     return;
   }
 
@@ -45,7 +54,7 @@ module.exports = async function handler(req, res) {
   const fromEmail = process.env.CONTACT_FROM_EMAIL || 'Portfolio Contact <onboarding@resend.dev>';
 
   if (!apiKey) {
-    res.status(500).json({
+    sendJson(res, 500, {
       success: false,
       error: 'Email service is not configured yet. Add RESEND_API_KEY in Vercel.',
     });
@@ -79,13 +88,13 @@ module.exports = async function handler(req, res) {
 
     if (!response.ok) {
       console.error('Resend failed:', result);
-      res.status(502).json({ success: false, error: 'Email delivery failed.' });
+      sendJson(res, 502, { success: false, error: 'Email delivery failed.' });
       return;
     }
 
-    res.status(200).json({ success: true, message: 'Message received.' });
+    sendJson(res, 200, { success: true, message: 'Message received.' });
   } catch (error) {
     console.error('Contact handler failed:', error);
-    res.status(502).json({ success: false, error: 'Email delivery failed.' });
+    sendJson(res, 502, { success: false, error: 'Email delivery failed.' });
   }
 };
