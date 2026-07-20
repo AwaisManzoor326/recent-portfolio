@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Awais | AI, ML & Automation Engineer</title>
+<meta name="description" content="Awais — Computer Science student specializing in AI, ML & Automation. Building intelligent systems and modern web products.">
+
+<!-- Tailwind CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          void: '#060310',
+          abyss: '#0c0619',
+          surface: '#140b22',
+          panel: '#1c1030',
+          violet: {
+            50: '#f5f0ff', 100: '#e6d9ff', 200: '#c9adff', 300: '#a875ff',
+            400: '#8b3dff', 500: '#6d1fe0', 600: '#5613c2', 700: '#420d9c',
+            800: '#2f0872', 900: '#1c0448'
+          },
+          neon: '#c9adff',
+          neonSoft: '#f0eaff',
+          cyanpulse: '#ffffff',
+          magenta: '#4c1d95'
+        },
+        fontFamily: {
+          display: ['"Space Grotesk"', 'sans-serif'],
+          body: ['"Inter"', 'sans-serif'],
+          mono: ['"JetBrains Mono"', 'monospace']
+        },
+        boxShadow: {
+          glow: '0 0 20px rgba(139,61,255,0.45), 0 0 60px rgba(109,31,224,0.25)',
+          glowLg: '0 0 40px rgba(139,61,255,0.55), 0 0 120px rgba(109,31,224,0.3)',
+        },
+        backgroundImage: {
+          'grid-fade': 'linear-gradient(to bottom, transparent, #060310 90%)',
+        }
+      }
+    }
+  }
+</script>
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body class="bg-void text-neonSoft font-body antialiased selection:bg-violet-500/40 selection:text-white">
+
+<!-- ===================== BACKGROUND LAYERS (no grid / no graph) ===================== -->
+<div class="fixed inset-0 -z-10 bg-void"></div>
+<div class="fixed inset-0 -z-10 mesh-wash"></div>
+<canvas id="particle-canvas" class="fixed inset-0 -z-10 opacity-70"></canvas>
+<div class="fixed inset-0 -z-10 bg-grid-fade"></div>
+<div id="cursor-dot" class="cursor-dot hidden md:block"></div>
+<div id="cursor-ring" class="cursor-ring hidden md:block"></div>
+
+<!-- ===================== HEADER ===================== -->
+<header id="site-header" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[94%] max-w-6xl transition-all duration-500">
+  <nav class="glass-panel rounded-2xl px-5 md:px-8 py-3.5 flex items-center justify-between">
+    <a href="#home" class="font-display font-semibold text-lg tracking-tight flex items-center gap-2">
+      <span class="w-2.5 h-2.5 rounded-full bg-violet-400 shadow-glow animate-pulse-slow"></span>
+      <span class="text-white">Awais<span class="text-violet-400">.dev</span></span>
+    </a>
+
+    <ul class="hidden md:flex items-center gap-8 text-sm font-medium text-neonSoft/70">
+      <li><a href="#home" class="nav-link">Home</a></li>
+      <li><a href="#about" class="nav-link">About</a></li>
+      <li><a href="#stack" class="nav-link">Services</a></li>
+      <li><a href="#projects" class="nav-link">Projects</a></li>
+      <li><a href="#certifications" class="nav-link">Certifications</a></li>
+      <li><a href="#contact" class="nav-link">Contact</a></li>
+    </ul>
+
+    <div class="flex items-center gap-3">
+      <a href="#contact" class="magnetic-btn hidden sm:inline-flex items-center gap-2 btn-glow px-5 py-2 rounded-full text-sm font-semibold text-white">
+        <i data-lucide="rocket" class="w-4 h-4"></i>
+        Start a Project
+      </a>
+      <button id="menu-toggle" class="md:hidden text-neonSoft" aria-label="Toggle menu">
+        <i data-lucide="menu" class="w-6 h-6"></i>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="glass-panel mt-2 rounded-2xl px-6 py-5 hidden md:hidden">
+    <ul class="flex flex-col gap-4 text-neonSoft/80 font-medium">
+      <li><a href="#home" class="nav-link-mobile">Home</a></li>
+      <li><a href="#about" class="nav-link-mobile">About</a></li>
+      <li><a href="#stack" class="nav-link-mobile">Services</a></li>
+      <li><a href="#projects" class="nav-link-mobile">Projects</a></li>
+      <li><a href="#certifications" class="nav-link-mobile">Certifications</a></li>
+      <li><a href="#contact" class="nav-link-mobile">Contact</a></li>
+    </ul>
+  </div>
+</header>
+
+<!-- ===================== HERO ===================== -->
+<section id="home" class="relative lg:min-h-screen flex items-center pt-24 pb-6 md:pt-28 md:pb-10 px-6 md:px-12 lg:px-20 overflow-hidden">
+  <div class="aurora-blob aurora-blob--violet"></div>
+  <div class="aurora-blob aurora-blob--magenta"></div>
+  <div class="aurora-blob aurora-blob--cyan"></div>
+  <div class="max-w-7xl mx-auto w-full grid lg:grid-cols-[1.15fr_0.85fr] gap-3 sm:gap-6 lg:gap-8 items-center">
+
+    <!-- Right: Large Portrait (shown first on mobile) -->
+    <div class="order-1 lg:order-2 relative flex justify-center lg:justify-end items-center reveal-up" style="--delay:0ms">
+      <div class="profile-portrait">
+        <img src="assets/profile.png" alt="Awais Manzoor" class="profile-portrait__img"
+             onerror="this.src='https://api.dicebear.com/7.x/thumbs/svg?seed=Ali&backgroundColor=1a1714'">
+      </div>
+    </div>
+
+    <!-- Left: Text -->
+    <div class="order-2 lg:order-1 reveal-up text-center lg:text-left" style="--delay:100ms">
+      <p class="inline-flex items-center gap-2 font-mono text-xs tracking-widest uppercase text-cyanpulse/90 border border-cyanpulse/25 bg-cyanpulse/5 px-4 py-1.5 rounded-full mb-3 sm:mb-6">
+        <span class="w-1.5 h-1.5 rounded-full bg-cyanpulse animate-pulse"></span>
+        Open to Collaborations
+      </p>
+
+      <h1 class="font-display font-bold text-3xl sm:text-5xl lg:text-[3.75rem] leading-[1.15] lg:leading-[1.05] text-white mb-3 sm:mb-6 tracking-tight">
+        Engineering <span class="text-gradient glow-text">Intelligent Systems</span> that Learn, Automate &amp; Ship.
+      </h1>
+
+      <p class="text-neonSoft/60 text-sm sm:text-lg max-w-xl mx-auto lg:mx-0 mb-2 sm:mb-4 leading-relaxed">
+        I'm <span class="text-white font-medium">Awais Manzoor</span>, a Computer Science student focused on AI, ML
+        &amp; Automation — designing LLM pipelines, intelligent agents, and retrieval systems, backed by fast,
+        modern web interfaces when the product needs a face.
+      </p>
+
+      <div class="hidden sm:block font-mono text-base sm:text-lg md:text-xl text-violet-300 mb-5 sm:mb-8 lg:mb-10 h-8">
+        <span class="text-neonSoft/40">$</span> <span id="typed-text"></span><span class="typed-cursor">|</span>
+      </div>
+
+      <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4">
+        <a href="#projects" class="magnetic-btn btn-glow inline-flex items-center gap-2 px-7 py-3 sm:py-3.5 rounded-full font-semibold text-white text-sm">
+          <i data-lucide="sparkles" class="w-4 h-4"></i> View My Work
+        </a>
+        <a href="https://github.com/AwaisManzoor326" target="_blank" rel="noopener" class="icon-box" title="GitHub"><svg viewBox="0 0 24 24" class="w-4 h-4" fill="currentColor" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></a>
+        <a href="https://linkedin.com/in/awais-manzoor-2950362a4/" target="_blank" rel="noopener" class="icon-box" title="LinkedIn"><svg viewBox="0 0 24 24" class="w-4 h-4" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+        <a href="https://wa.me/923288658326" target="_blank" rel="noopener" class="icon-box" title="WhatsApp"><i data-lucide="message-circle" class="w-4 h-4"></i></a>
+        <a href="mailto:awaismeer019@gmail.com" class="icon-box email-link" data-email="awaismeer019@gmail.com" title="Email"><i data-lucide="mail" class="w-4 h-4"></i></a>
+      </div>
+    </div>
+  </div>
+
+  <a href="#about" class="hidden md:flex absolute bottom-8 left-1/2 -translate-x-1/2 text-neonSoft/40 flex-col items-center gap-2 scroll-hint">
+    <span class="text-[10px] font-mono uppercase tracking-widest">Scroll</span>
+    <i data-lucide="chevron-down" class="w-4 h-4"></i>
+  </a>
+</section>
+
+<!-- ===================== TICKER ===================== -->
+<div class="ticker-wrap">
+  <div class="ticker-track">
+    <span>PYTHON</span><span class="ticker-dot">✦</span>
+    <span>LLM ENGINEERING</span><span class="ticker-dot">✦</span>
+    <span>RAG PIPELINES</span><span class="ticker-dot">✦</span>
+    <span>PROCESS AUTOMATION</span><span class="ticker-dot">✦</span>
+    <span>REACT.JS</span><span class="ticker-dot">✦</span>
+    <span>MACHINE LEARNING</span><span class="ticker-dot">✦</span>
+    <span>PROMPT ENGINEERING</span><span class="ticker-dot">✦</span>
+    <span>PYTHON</span><span class="ticker-dot">✦</span>
+    <span>LLM ENGINEERING</span><span class="ticker-dot">✦</span>
+    <span>RAG PIPELINES</span><span class="ticker-dot">✦</span>
+    <span>PROCESS AUTOMATION</span><span class="ticker-dot">✦</span>
+    <span>REACT.JS</span><span class="ticker-dot">✦</span>
+    <span>MACHINE LEARNING</span><span class="ticker-dot">✦</span>
+    <span>PROMPT ENGINEERING</span><span class="ticker-dot">✦</span>
+  </div>
+</div>
+
+<!-- ===================== ABOUT ===================== -->
+<section id="about" class="relative py-28 px-6 md:px-12 lg:px-20">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-16 reveal-up">
+      <p class="module-tag"><span class="module-tag__num">01</span>About</p>
+      <h2 class="section-title">Professional Profile</h2>
+    </div>
+
+    <div class="grid lg:grid-cols-2 gap-8">
+      <!-- Current Role Card -->
+      <div class="glass-card tilt-card p-8 md:p-10 reveal-up" style="--delay:0ms">
+        <div class="flex items-start gap-4 mb-6">
+          <div class="icon-box"><i data-lucide="briefcase" class="w-5 h-5"></i></div>
+          <div>
+            <p class="font-mono text-xs uppercase tracking-wider text-cyanpulse/80 mb-1">Current Role</p>
+            <h3 class="font-display text-xl font-semibold text-white">AI Automation &amp; AI/ML Implementation Intern</h3>
+          </div>
+        </div>
+        <p class="text-neonSoft/60 leading-relaxed mb-5">
+          Interning at <span class="text-violet-300 font-medium">EcoZindagi</span>, under the
+          <span class="text-violet-300 font-medium">eEarn Innovation Hub</span> in Rawalpindi — designing
+          automation workflows, integrating LLM-powered features, and building applied ML pipelines that move
+          straight from prototype to production.
+        </p>
+        <div class="flex flex-wrap gap-2">
+          <span class="tag-pill">Automation Pipelines</span>
+          <span class="tag-pill">LLM Integration</span>
+          <span class="tag-pill">Applied ML</span>
+        </div>
+      </div>
+
+      <!-- Education Card -->
+      <div class="glass-card tilt-card p-8 md:p-10 reveal-up" style="--delay:100ms">
+        <div class="flex items-start gap-4 mb-6">
+          <div class="icon-box"><i data-lucide="graduation-cap" class="w-5 h-5"></i></div>
+          <div>
+            <p class="font-mono text-xs uppercase tracking-wider text-cyanpulse/80 mb-1">Education</p>
+            <h3 class="font-display text-xl font-semibold text-white">BS Computer Science Student</h3>
+          </div>
+        </div>
+        <p class="text-neonSoft/60 leading-relaxed mb-5">
+          Currently pursuing my degree at the <span class="text-violet-300 font-medium">University of Azad
+          Jammu &amp; Kashmir (UAJK)</span>, building a strong foundation in algorithms, systems design, and
+          applied machine learning — while shipping real projects alongside coursework.
+        </p>
+        <div class="flex flex-wrap gap-2">
+          <span class="tag-pill">Algorithms &amp; Systems</span>
+          <span class="tag-pill">Machine Learning</span>
+          <span class="tag-pill">Software Engineering</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Details Panel -->
+    <div class="mt-10 glass-card p-8 md:p-10 reveal-up" style="--delay:200ms">
+      <p class="font-mono text-xs uppercase tracking-wider text-cyanpulse/80 mb-6">Quick Details</p>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="detail-item">
+          <i data-lucide="user"></i>
+          <div>
+            <p class="detail-item__label">Name</p>
+            <p class="detail-item__value">Awais Manzoor</p>
+          </div>
+        </div>
+        <div class="detail-item">
+          <i data-lucide="badge-check"></i>
+          <div>
+            <p class="detail-item__label">Status</p>
+            <p class="detail-item__value">CS Student &amp; AI Intern</p>
+          </div>
+        </div>
+        <div class="detail-item">
+          <i data-lucide="target"></i>
+          <div>
+            <p class="detail-item__label">Focus</p>
+            <p class="detail-item__value">AI, ML &amp; Automation</p>
+          </div>
+        </div>
+        <div class="detail-item">
+          <i data-lucide="map-pin"></i>
+          <div>
+            <p class="detail-item__label">Based In</p>
+            <p class="detail-item__value">Rawalpindi, Pakistan</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mini timeline -->
+    <div class="mt-8 glass-card p-8 md:p-10 reveal-up" style="--delay:250ms">
+      <p class="font-mono text-xs uppercase tracking-wider text-cyanpulse/80 mb-6">How I Work</p>
+      <div class="grid sm:grid-cols-3 gap-8">
+        <div class="flex gap-4">
+          <i data-lucide="search" class="w-5 h-5 text-violet-400 shrink-0 mt-1"></i>
+          <div>
+            <h4 class="text-white font-semibold mb-1">Understand</h4>
+            <p class="text-sm text-neonSoft/50">Diagnose the real problem before touching a model or a line of code.</p>
+          </div>
+        </div>
+        <div class="flex gap-4">
+          <i data-lucide="cpu" class="w-5 h-5 text-violet-400 shrink-0 mt-1"></i>
+          <div>
+            <h4 class="text-white font-semibold mb-1">Build</h4>
+            <p class="text-sm text-neonSoft/50">Prototype fast, then harden into reliable, testable pipelines.</p>
+          </div>
+        </div>
+        <div class="flex gap-4">
+          <i data-lucide="trending-up" class="w-5 h-5 text-violet-400 shrink-0 mt-1"></i>
+          <div>
+            <h4 class="text-white font-semibold mb-1">Ship &amp; Improve</h4>
+            <p class="text-sm text-neonSoft/50">Deploy, measure, and iterate against real accuracy and latency numbers.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== WHAT I DO ===================== -->
+<section id="stack" class="relative py-28 px-6 md:px-12 lg:px-20 bg-abyss/40">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-16 reveal-up">
+      <p class="module-tag"><span class="module-tag__num">02</span>Services</p>
+      <h2 class="section-title">How I Can Help</h2>
+    </div>
+
+    <div class="grid lg:grid-cols-2 gap-8">
+      <!-- AI/ML Column -->
+      <div class="reveal-up" style="--delay:0ms">
+        <h3 class="font-display text-lg font-semibold text-white mb-6 flex items-center gap-3">
+          <i data-lucide="brain-circuit" class="w-5 h-5 text-violet-400"></i>
+          AI / ML / Automation
+          </h3>
+        <div class="flex flex-col gap-4">
+          <div class="service-card tilt-card">
+            <i data-lucide="message-square-code"></i>
+            <div>
+              <h4>AI Agent &amp; LLM Development</h4>
+              <p>Building intelligent agents, chatbots, and RAG-based systems powered by large language models.</p>
+            </div>
+          </div>
+          <div class="service-card tilt-card">
+            <i data-lucide="scatter-chart"></i>
+            <div>
+              <h4>Machine Learning Solutions</h4>
+              <p>Designing and training ML models for classification, detection, and prediction tasks.</p>
+            </div>
+          </div>
+          <div class="service-card tilt-card">
+            <i data-lucide="workflow"></i>
+            <div>
+              <h4>Process Automation</h4>
+              <p>Automating repetitive workflows and business processes end-to-end.</p>
+            </div>
+          </div>
+          <div class="service-card tilt-card">
+            <i data-lucide="table"></i>
+            <div>
+              <h4>Data Analysis &amp; Insights</h4>
+              <p>Cleaning, analyzing, and visualizing data using Python, Pandas, and NumPy.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Web Dev Column -->
+      <div class="reveal-up" style="--delay:100ms">
+        <h3 class="font-display text-lg font-semibold text-white mb-6 flex items-center gap-3">
+          <i data-lucide="code-2" class="w-5 h-5 text-cyanpulse"></i>
+          Web Development
+        </h3>
+        <div class="flex flex-col gap-4">
+          <div class="service-card tilt-card">
+            <i data-lucide="atom"></i>
+            <div>
+              <h4>Web Application Development</h4>
+              <p>Building responsive, modern web interfaces with React and Tailwind CSS.</p>
+            </div>
+          </div>
+          <div class="service-card tilt-card">
+            <i data-lucide="layout-dashboard"></i>
+            <div>
+              <h4>Dashboard &amp; UI Engineering</h4>
+              <p>Crafting clean, high-performance dashboards and admin interfaces.</p>
+            </div>
+          </div>
+          <div class="service-card tilt-card">
+            <i data-lucide="server"></i>
+            <div>
+              <h4>API &amp; Backend Integration</h4>
+              <p>Connecting front-end interfaces to Flask/FastAPI backends and third-party services.</p>
+            </div>
+          </div>
+          <div class="service-card tilt-card">
+            <i data-lucide="wind"></i>
+            <div>
+              <h4>Responsive Interface Design</h4>
+              <p>Pixel-accurate, accessible layouts that hold up across every screen size.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PROJECTS ===================== -->
+<section id="projects" class="relative py-28 px-6 md:px-12 lg:px-20">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-16 reveal-up">
+      <p class="module-tag"><span class="module-tag__num">03</span>Projects</p>
+      <h2 class="section-title">Featured Projects</h2>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-8">
+
+      <!-- Project 1 -->
+      <article class="project-card tilt-card reveal-up" style="--delay:0ms">
+        <div class="term-bar">
+          <span class="term-dot term-dot--a"></span><span class="term-dot term-dot--b"></span><span class="term-dot term-dot--c"></span>
+          <span class="term-file">dualmind_assistant.ai</span>
+        </div>
+        <div class="flex items-center justify-between mb-5">
+          <div class="icon-box"><i data-lucide="bot-message-square" class="w-5 h-5"></i></div>
+          <span class="text-xs font-mono text-cyanpulse/70">AI · Full-Stack</span>
+        </div>
+        <h3 class="font-display text-xl font-semibold text-white mb-3">DualMind Assistant</h3>
+        <p class="text-neonSoft/55 text-sm leading-relaxed mb-5">
+          A dual-mode AI chatbot supporting general conversation and RAG-based document Q&amp;A, plus a voice
+          interface — served through a FastAPI backend with a React front end.
+        </p>
+        <div class="flex flex-wrap gap-2 mb-6">
+          <span class="tag-pill">FastAPI</span><span class="tag-pill">React</span>
+          <span class="tag-pill">RAG</span><span class="tag-pill">Voice AI</span>
+        </div>
+        <a href="https://github.com/AwaisManzoor326/DualMind_Assistant.git" target="_blank" rel="noopener" class="project-link">
+          <svg viewBox="0 0 24 24" class="w-4 h-4 shrink-0" fill="currentColor" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg> View Code
+        </a>
+      </article>
+
+      <!-- Project 2 -->
+      <article class="project-card tilt-card reveal-up" style="--delay:100ms">
+        <div class="term-bar">
+          <span class="term-dot term-dot--a"></span><span class="term-dot term-dot--b"></span><span class="term-dot term-dot--c"></span>
+          <span class="term-file">intrusion_detection.py</span>
+        </div>
+        <div class="flex items-center justify-between mb-5">
+          <div class="icon-box"><i data-lucide="shield-alert" class="w-5 h-5"></i></div>
+          <span class="text-xs font-mono text-cyanpulse/70">ML · Security</span>
+        </div>
+        <h3 class="font-display text-xl font-semibold text-white mb-3">Intrusion &amp; Phishing Detection System</h3>
+        <p class="text-neonSoft/55 text-sm leading-relaxed mb-5">
+          An SVM-based detection system reaching <span class="text-violet-300 font-medium">95% accuracy</span>,
+          wrapped in a Flask inference pipeline for real-time classification of network intrusions and phishing
+          attempts.
+        </p>
+        <div class="flex flex-wrap gap-2 mb-6">
+          <span class="tag-pill">SVM</span><span class="tag-pill">Flask</span>
+          <span class="tag-pill">Scikit-Learn</span>
+        </div>
+        <a href="https://github.com/AwaisManzoor326/phishing-site-detestion.git" target="_blank" rel="noopener" class="project-link">
+          <svg viewBox="0 0 24 24" class="w-4 h-4 shrink-0" fill="currentColor" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg> View Code
+        </a>
+      </article>
+
+      <!-- Project 3 -->
+      <article class="project-card tilt-card reveal-up" style="--delay:0ms">
+        <div class="term-bar">
+          <span class="term-dot term-dot--a"></span><span class="term-dot term-dot--b"></span><span class="term-dot term-dot--c"></span>
+          <span class="term-file">Automation.py</span>
+        </div>
+        <div class="flex items-center justify-between mb-5">
+          <div class="icon-box"><i data-lucide="graduation-cap" class="w-5 h-5"></i></div>
+          <span class="text-xs font-mono text-cyanpulse/70">Voice Assistant</span>
+        </div>
+        <h3 class="font-display text-xl font-semibold text-white mb-3">Jarvis</h3>
+        <p class="text-neonSoft/55 text-sm leading-relaxed mb-5">
+          A personal assistant built with Python, featuring speech recognition and text-to-speech capabilities. Can Listen to commands and perform tasks like playing music, searching the web, and providing information.
+        </p>
+        <div class="flex flex-wrap gap-2 mb-6">
+          <span class="tag-pill">Python</span><span class="tag-pill">Speech Recognition</span>
+          <span class="tag-pill">pyaudio</span><span class="tag-pill">pyttx3</span>
+        </div>
+        <a href="https://github.com/AwaisManzoor326/personalVoiceAssistant" target="_blank" rel="noopener" class="project-link">
+          <svg viewBox="0 0 24 24" class="w-4 h-4 shrink-0" fill="currentColor" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg> View Code
+        </a>
+      </article>
+
+      <!-- Project 4 -->
+      <article class="project-card tilt-card reveal-up" style="--delay:100ms">
+        <div class="term-bar">
+          <span class="term-dot term-dot--a"></span><span class="term-dot term-dot--b"></span><span class="term-dot term-dot--c"></span>
+          <span class="term-file">sps_bms.jsx</span>
+        </div>
+        <div class="flex items-center justify-between mb-5">
+          <div class="icon-box"><i data-lucide="layout-dashboard" class="w-5 h-5"></i></div>
+          <span class="text-xs font-mono text-cyanpulse/70">Web · clone</span>
+        </div>
+        <h3 class="font-display text-xl font-semibold text-white mb-3">SPS-BMS Clone</h3>
+        <p class="text-neonSoft/55 text-sm leading-relaxed mb-5">
+          A high-performance dashboard clone rebuilt from the ground up with React and Tailwind CSS — focused
+          on data density, snappy interactions, and pixel-accurate UI fidelity.
+        </p>
+        <div class="flex flex-wrap gap-2 mb-6">
+          <span class="tag-pill">React</span><span class="tag-pill">Tailwind CSS</span>
+          <span class="tag-pill">Dashboard UI</span>
+        </div>
+        <a href="https://sps-bms.vercel.app/" target="_blank" rel="noopener" class="project-link">
+          <i data-lucide="external-link" class="w-4 h-4"></i> See Live
+        </a>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CERTIFICATIONS ===================== -->
+<section id="certifications" class="relative py-28 px-6 md:px-12 lg:px-20 bg-abyss/40">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-16 reveal-up">
+      <p class="module-tag"><span class="module-tag__num">04</span>Certifications</p>
+      <h2 class="section-title">Certifications</h2>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-8">
+      <div class="glass-card tilt-card p-8 text-center reveal-up" style="--delay:0ms">
+        <div class="icon-box mb-5 mx-auto"><i data-lucide="award" class="w-5 h-5"></i></div>
+        <h3 class="font-display text-lg font-semibold text-white mb-1">AI ML</h3>
+        <p class="text-cyanpulse/70 text-xs font-mono uppercase tracking-wider">AJK ITB, ITEC · 2026</p>
+      </div>
+      <div class="glass-card tilt-card p-8 text-center reveal-up" style="--delay:100ms">
+        <div class="icon-box mb-5 mx-auto"><i data-lucide="award" class="w-5 h-5"></i></div>
+        <h3 class="font-display text-lg font-semibold text-white mb-1">Gen AI</h3>
+        <p class="text-cyanpulse/70 text-xs font-mono uppercase tracking-wider">Pak Angels, HEC, ULEF · 2025</p>
+      </div>
+      <div class="glass-card tilt-card p-8 text-center reveal-up" style="--delay:200ms">
+        <div class="icon-box mb-5 mx-auto"><i data-lucide="award" class="w-5 h-5"></i></div>
+        <h3 class="font-display text-lg font-semibold text-white mb-1">Full Stack Development</h3>
+        <p class="text-cyanpulse/70 text-xs font-mono uppercase tracking-wider">NAVTTC, Corvit · 2025</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CONTACT ===================== -->
+<section id="contact" class="relative py-28 px-6 md:px-12 lg:px-20 bg-abyss/40 border-t border-violet-500/10">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-16 reveal-up">
+      <p class="module-tag"><span class="module-tag__num">05</span>Contact</p>
+      <h2 class="section-title">Let's Build Something Intelligent</h2>
+      <p class="text-neonSoft/50 max-w-xl mx-auto mt-4">
+        Have a project to build, a process to automate, or an AI idea worth exploring? Let's discuss how
+        I can help.
+      </p>
+    </div>
+
+    <div class="max-w-2xl mx-auto reveal-up" style="--delay:0ms">
+      <div class="glass-card p-8 md:p-10">
+        <form id="contact-form" novalidate>
+          <!-- Honeypot spam trap: real users never see or fill this -->
+          <input type="checkbox" name="_honey" class="hidden" style="display:none" tabindex="-1" autocomplete="off">
+
+          <div class="form-group">
+            <input type="text" id="name" name="name" placeholder="Your Name" required>
+            <span class="form-error">Please enter your name.</span>
+          </div>
+
+          <div class="form-group">
+            <input type="email" id="email" name="email" placeholder="you@example.com" required>
+            <span class="form-error">Please enter a valid email.</span>
+          </div>
+
+          <div class="form-group">
+            <input type="text" id="subject" name="subject" placeholder="Subject" required>
+            <span class="form-error">Please enter a subject.</span>
+          </div>
+
+          <div class="form-group">
+            <textarea id="message" name="message" rows="5" placeholder="Tell me about your project or idea..." required></textarea>
+            <span class="form-error">Please write a short message.</span>
+          </div>
+
+          <button type="submit" id="submit-btn" class="magnetic-btn btn-glow w-full py-4 rounded-xl font-semibold text-white flex items-center justify-center gap-2 mt-2">
+            <span id="submit-text">Send Message</span>
+            <i data-lucide="send" class="w-4 h-4" id="submit-icon"></i>
+          </button>
+
+          <p id="form-success" class="hidden mt-4 text-sm text-cyanpulse flex items-center gap-2">
+            <i data-lucide="check-circle-2" class="w-4 h-4"></i> Message sent — I'll get back to you soon.
+          </p>
+          <p id="form-fail" class="hidden mt-4 text-sm text-red-400 flex items-center gap-2">
+            <i data-lucide="alert-circle" class="w-4 h-4"></i>
+            <span>Couldn't send — please email me directly at <a href="mailto:awaismeer019@gmail.com" class="underline">awaismeer019@gmail.com</a>.</span>
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="relative pt-20 pb-10 px-6 md:px-12 lg:px-20 bg-abyss/70 border-t border-violet-500/15 overflow-hidden">
+  <div class="aurora-blob aurora-blob--violet" style="opacity:.22"></div>
+  <div class="max-w-7xl mx-auto relative">
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12 pb-14">
+
+      <div class="sm:col-span-2 lg:col-span-1">
+        <a href="#home" class="font-display font-semibold text-white text-xl">Awais<span class="text-violet-400">.dev</span></a>
+        <p class="text-neonSoft/45 text-sm mt-4 leading-relaxed max-w-xs">AI, ML &amp; Automation engineer building intelligent systems and modern web products.</p>
+      </div>
+
+      <div>
+        <p class="font-mono text-xs uppercase tracking-wider text-cyanpulse/80 mb-5">Quick Links</p>
+        <div class="flex flex-col gap-3 text-sm">
+          <a href="#about" class="nav-link w-fit text-neonSoft/55">About</a>
+          <a href="#stack" class="nav-link w-fit text-neonSoft/55">Services</a>
+          <a href="#projects" class="nav-link w-fit text-neonSoft/55">Projects</a>
+          <a href="#certifications" class="nav-link w-fit text-neonSoft/55">Certifications</a>
+        </div>
+      </div>
+
+      <div>
+        <p class="font-mono text-xs uppercase tracking-wider text-cyanpulse/80 mb-5">Get in Touch</p>
+        <div class="flex flex-col gap-3 text-sm">
+          <a href="https://www.google.com/maps/search/?api=1&query=Rawalpindi,Punjab,Pakistan" target="_blank" rel="noopener" class="flex items-center gap-2.5 text-neonSoft/55 hover:text-white transition-colors">
+            <i data-lucide="map-pin" class="w-4 h-4 shrink-0"></i> Rawalpindi, Punjab, PK
+          </a>
+          <a href="mailto:awaismeer019@gmail.com" class="flex items-center gap-2.5 text-neonSoft/55 hover:text-white transition-colors email-link" data-email="awaismeer019@gmail.com">
+            <i data-lucide="mail" class="w-4 h-4 shrink-0"></i> awaismeer019@gmail.com
+          </a>
+          <a href="https://wa.me/923288658326" target="_blank" rel="noopener" class="flex items-center gap-2.5 text-neonSoft/55 hover:text-white transition-colors">
+            <i data-lucide="message-circle" class="w-4 h-4 shrink-0"></i> WhatsApp
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <p class="font-mono text-xs uppercase tracking-wider text-cyanpulse/80 mb-5">Connect</p>
+        <div class="flex flex-wrap items-center gap-3">
+          <a href="https://github.com/AwaisManzoor326" target="_blank" rel="noopener" class="icon-box" title="GitHub"><svg viewBox="0 0 24 24" class="w-4 h-4" fill="currentColor" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></a>
+          <a href="https://linkedin.com/in/awais-manzoor-2950362a4/" target="_blank" rel="noopener" class="icon-box" title="LinkedIn"><svg viewBox="0 0 24 24" class="w-4 h-4" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+          <!-- TODO: swap in the real phone number if this should differ from WhatsApp -->
+          <a href="tel:+923288658326" class="icon-box" title="Call"><i data-lucide="phone" class="w-4 h-4"></i></a>
+          <!-- TODO: replace with the real Instagram handle -->
+          <a href="https://instagram.com/awaismanzoor" target="_blank" rel="noopener" class="icon-box" title="Instagram">
+            <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18" rx="5"></rect>
+              <circle cx="12" cy="12" r="4"></circle>
+              <circle cx="17.3" cy="6.7" r="0.6" fill="currentColor" stroke="none"></circle>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
