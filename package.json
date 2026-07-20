@@ -1,10 +1,8 @@
 {
-  "name": "portfolio-contact-backend",
+  "name": "awais-portfolio",
   "version": "1.0.0",
   "private": true,
-  "scripts": {
-    "start": "node server.js",
-    "test": "node --test",
-    "build": "echo 'No build step required'"
+  "dependencies": {
+    "resend": "^4.0.0"
   }
 }

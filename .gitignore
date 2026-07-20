@@ -1,4 +1,4 @@
-/.claude
 node_modules/
+.vercel
 .env
-.DS_Store
+.env.local
