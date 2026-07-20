@@ -284,12 +284,11 @@ function initRippleButtons() {
 }
 
 /* ---------------- Contact Form Handling ---------------- */
-// Delivered via FormSubmit (https://formsubmit.co) — no signup, no API key.
-// The ONLY manual step: the first time this address ever receives a
-// submission, FormSubmit emails a one-time "Activate Form" confirmation
-// link to that inbox. Click it once and every submission after that is
-// delivered automatically.
-const CONTACT_EMAIL = 'awaismeer019@gmail.com';
+// The contact form submits to a small local backend endpoint. In production
+// you can swap this URL with a hosted server or a serverless function.
+const CONTACT_ENDPOINT = window.location.protocol === 'file:'
+  ? 'http://127.0.0.1:3000/api/contact'
+  : '/api/contact';
 
 function initContactForm() {
   const form = document.getElementById('contact-form');
@@ -366,7 +365,7 @@ function initContactForm() {
       const subject = form.elements.subject.value.trim();
       const message = form.elements.message.value.trim();
 
-      const response = await fetch(`https://formsubmit.co/ajax/${CONTACT_EMAIL}`, {
+      const response = await fetch(CONTACT_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         signal: controller.signal,
@@ -375,18 +374,12 @@ function initContactForm() {
           email,
           subject,
           message,
-          _subject: `Portfolio contact: ${subject}`,
-          _template: 'table',
-          _captcha: 'false',
         }),
       });
 
-      // FormSubmit always answers HTTP 200, even when it silently rejects the
-      // submission (e.g. the page was opened as a local file instead of
-      // through a real server) — the real result is in the JSON body.
       const result = await response.json().catch(() => null);
-      if (!response.ok || !result || result.success !== 'true') {
-        throw new Error((result && result.message) || `Submission failed with status ${response.status}`);
+      if (!response.ok || !result || result.success !== true) {
+        throw new Error((result && result.error) || (result && result.message) || `Submission failed with status ${response.status}`);
       }
 
       resetButton();
@@ -399,7 +392,13 @@ function initContactForm() {
     } catch (err) {
       console.error('Contact form submission failed:', err);
       resetButton();
-      if (failMsg) failMsg.classList.remove('hidden');
+      if (failMsg) {
+        const messageText = failMsg.querySelector('span');
+        if (messageText) {
+          messageText.textContent = err.message || "Couldn't send — please email me directly at awaismeer019@gmail.com.";
+        }
+        failMsg.classList.remove('hidden');
+      }
     } finally {
       clearTimeout(timeout);
     }

@@ -1,0 +1,10 @@
+{
+  "name": "portfolio-contact-backend",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test",
+    "build": "echo 'No build step required'"
+  }
+}

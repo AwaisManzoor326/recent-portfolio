@@ -1,0 +1,7 @@
+1. Push this folder to GitHub.
+2. In Vercel, import the GitHub repository.
+3. Add these environment variables in Vercel:
+   - RESEND_API_KEY
+   - CONTACT_TO_EMAIL
+   - CONTACT_FROM_EMAIL
+4. Deploy.
