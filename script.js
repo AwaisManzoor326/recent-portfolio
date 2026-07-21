@@ -2,8 +2,6 @@
    Ember Tech — Interactions
    ========================================================= */
 
-import { Analytics } from "@vercel/analytics/next"
-
 document.addEventListener('DOMContentLoaded', () => {
   initIcons();
   initMobileMenu();
